@@ -32,10 +32,12 @@ func handleData(rw http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", serveFile("index.html"))
-	http.HandleFunc("/data", handleData)
-	http.HandleFunc("/form/create", serveFile("htmx/form.html"))
+	http.HandleFunc("GET /", serveFile("index.html"))
+	http.HandleFunc("GET /form/create", serveFile("htmx/form.html"))
 
-	http.HandleFunc("/htmx.min.js", serveFile("dist/htmx.min.js"))
+	http.HandleFunc("GET /data", handleData)
+	http.HandleFunc("POST /data", handleData)
+
+	http.HandleFunc("GET /htmx.min.js", serveFile("dist/htmx.min.js"))
 	http.ListenAndServe(":8080", nil)
 }
