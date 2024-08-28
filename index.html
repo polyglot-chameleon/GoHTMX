@@ -13,8 +13,10 @@
       Get data
     </button>
 
-    <ul id="data">
-      <li>hi there</li>
-    </ul>
+    <div hx-target="this" hx-swap="outerHTML">
+      <button hx-get="/form/create">Create data</button>
+    </div>
+
+    <ul id="data" />
   </body>
 </html>
