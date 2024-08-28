@@ -1,24 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-
 	"GoHTMX/controller"
-
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"io"
+	"net/http"
 )
 
-func main() {
-	r := gin.Default()
-	r.LoadHTMLFiles("index.html")
-	r.StaticFile("/htmx.min.js", "./dist/htmx.min.js")
+func serveFile(fpath string) func(http.ResponseWriter, *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) { http.ServeFile(rw, req, fpath) }
+}
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{})
-	})
+func handleData(rw http.ResponseWriter, req *http.Request) {
+	if req.Method == "GET" {
+		rw.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	r.GET("/data", func(c *gin.Context) {
 		var posts = controller.Controller.All()
 		var dataHtml = ""
 
@@ -26,17 +22,20 @@ func main() {
 			dataHtml += fmt.Sprintf("<li>%s</li>", posts[i].Title)
 		}
 
-		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(dataHtml))
-	})
+		io.WriteString(rw, dataHtml)
 
-	r.GET("/form/create", func(c *gin.Context) {
-		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(`<form hx-post="/data" hx-target="this" hx-swap="outerHTML"><div><label>Title</label><input type="text" name="title"></div><div><label>Body</label><input type="text" name="body"></div><button class="btn">Submit</button><button class="btn" hx-get="/contact/1">Cancel</button></form>`))
-	})
+	} else if req.Method == "POST" {
+		req.ParseForm()
 
-	r.POST("/data", func(c *gin.Context) {
-		controller.Controller.Create(controller.PostResource{Title: c.PostForm("title"), Body: c.PostForm("body")})
+		controller.Controller.Create(controller.PostResource{Title: req.Form.Get("title"), Body: req.Form.Get("body")})
+	}
+}
 
-	})
+func main() {
+	http.HandleFunc("/", serveFile("index.html"))
+	http.HandleFunc("/data", handleData)
+	http.HandleFunc("/form/create", serveFile("htmx/form.html"))
 
-	r.Run()
+	http.HandleFunc("/htmx.min.js", serveFile("dist/htmx.min.js"))
+	http.ListenAndServe(":8080", nil)
 }
