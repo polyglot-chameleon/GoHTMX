@@ -4,6 +4,7 @@ import (
 	"GoHTMX/util"
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -33,6 +34,14 @@ func (mc *controller) Connect() error {
 
 func (mc *controller) Create(newPost PostResource) (sql.Result, error) {
 	result, err := mc.db.Exec(fmt.Sprintf("INSERT INTO posts(title, body) VALUES ('%s', '%s')", newPost.Title, newPost.Body))
+
+	util.Check(err)
+
+	lastInsertId, _ := result.LastInsertId()
+	rowsAffected, _ := result.RowsAffected()
+
+	log.Printf("Inserted post(id=%v)\tRows affected: #%v", lastInsertId, rowsAffected)
+
 	return result, err
 }
 
@@ -64,6 +73,8 @@ func (mc *controller) All() ([]PostResource, error) {
 		rows.Scan(&post.Title, &post.Body)
 		storedPosts = append(storedPosts, post)
 	}
+
+	log.Printf("Read %v posts", len(storedPosts))
 
 	return storedPosts, err
 }
