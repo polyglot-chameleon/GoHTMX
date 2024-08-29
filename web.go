@@ -5,6 +5,7 @@ import (
 	"GoHTMX/util"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -16,14 +17,16 @@ func init() {
 }
 
 func serveFile(fpath string) func(http.ResponseWriter, *http.Request) {
-	return func(rw http.ResponseWriter, req *http.Request) { http.ServeFile(rw, req, fpath) }
+	return func(rw http.ResponseWriter, req *http.Request) {
+		log.Printf("Serve %s", fpath)
+		http.ServeFile(rw, req, fpath)
+	}
 }
 
 func getData(rw http.ResponseWriter, req *http.Request) {
 	rw.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	posts, err := controller.Controller.All()
-	util.Check(err)
+	posts, _ := controller.Controller.All()
 
 	var dataHtml = ""
 
@@ -52,5 +55,7 @@ func addRoutes() {
 
 func main() {
 	addRoutes()
-	http.ListenAndServe(os.Getenv("PORT"), nil)
+
+	log.Printf("Starting Server on %s", os.Getenv("PORT"))
+	util.Check(http.ListenAndServe(os.Getenv("PORT"), nil))
 }
