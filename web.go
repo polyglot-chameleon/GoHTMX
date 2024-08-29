@@ -2,10 +2,18 @@ package main
 
 import (
 	"GoHTMX/controller"
+	"GoHTMX/util"
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
+
+func init() {
+	util.LoadDotEnv(".env")
+	err := controller.Controller.Connect()
+	util.Check(err)
+}
 
 func serveFile(fpath string) func(http.ResponseWriter, *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) { http.ServeFile(rw, req, fpath) }
@@ -14,7 +22,9 @@ func serveFile(fpath string) func(http.ResponseWriter, *http.Request) {
 func getData(rw http.ResponseWriter, req *http.Request) {
 	rw.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	var posts = controller.Controller.All()
+	posts, err := controller.Controller.All()
+	util.Check(err)
+
 	var dataHtml = ""
 
 	for i := 0; i < len(posts); i++ {
@@ -42,5 +52,5 @@ func addRoutes() {
 
 func main() {
 	addRoutes()
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(os.Getenv("PORT"), nil)
 }
