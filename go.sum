@@ -1,2 +1,10 @@
-github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
-github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
+github.com/mattn/go-sqlite3 v1.14.23 h1:gbShiuAP1W5j9UOksQ06aiiqPMxYecovVGwmTxWtuw0=
+github.com/mattn/go-sqlite3 v1.14.23/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
+github.com/polyglot-chameleon/controller v0.0.0-20240914171736-035a1ba62bd3 h1:9ciupytJOhgJTwYcodqWU10f6GJmgQBIyScTC+NGs+A=
+github.com/polyglot-chameleon/controller v0.0.0-20240914171736-035a1ba62bd3/go.mod h1:wAXiH4pgWBtqyCSxNKPAY+9zbdgSouCMTxBTZagQxqg=
+github.com/polyglot-chameleon/controller v0.0.0-20240914172305-706a77d7191c h1:pKIOMJV5AzEse0PlP9L3G/7CUaSxOSOx9lSw9ZkCPqA=
+github.com/polyglot-chameleon/controller v0.0.0-20240914172305-706a77d7191c/go.mod h1:wAXiH4pgWBtqyCSxNKPAY+9zbdgSouCMTxBTZagQxqg=
+github.com/polyglot-chameleon/controller v0.1.0 h1:5fyUlCiaEPbffkHdGUI3AF3ht+QogaF1FhZl1L7Nij4=
+github.com/polyglot-chameleon/controller v0.1.0/go.mod h1:wAXiH4pgWBtqyCSxNKPAY+9zbdgSouCMTxBTZagQxqg=
+github.com/polyglot-chameleon/goutil v0.0.0-20240914170549-e0aecfd10483 h1:tPWekS7XQBVoUFPLUXSt8FqiMjNz98g3YnGjdbOvLJw=
+github.com/polyglot-chameleon/goutil v0.0.0-20240914170549-e0aecfd10483/go.mod h1:VBqOpk/Bg4HZ7VuSOqU+xEY80wciuCunDxKUMBz9PUs=
