@@ -39,7 +39,7 @@ func testRequest(t *testing.T, method string, path string, contentLength int) {
 }
 
 func TestGetRoot(t *testing.T) {
-	testRequest(t, http.MethodGet, "/", 510)
+	testRequest(t, http.MethodGet, "/", 493)
 	testRequest(t, http.MethodGet, "/htmx.min.js", 49567)
 }
 

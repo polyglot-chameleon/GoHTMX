@@ -1,18 +1,24 @@
 package main
 
 import (
-	"GoHTMX/controller"
-	"GoHTMX/util"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+
+	controller "github.com/polyglot-chameleon/controller"
+	util "github.com/polyglot-chameleon/goutil"
 )
+
+var crud *controller.Controller
 
 func init() {
 	util.LoadDotEnv(".env")
-	err := controller.Controller.Connect()
+
+	crud = &controller.Controller{}
+
+	err := crud.Connect()
 	util.Check(err)
 }
 
@@ -26,7 +32,7 @@ func serveFile(fpath string) func(http.ResponseWriter, *http.Request) {
 func getData(rw http.ResponseWriter, req *http.Request) {
 	rw.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-	posts, _ := controller.Controller.All()
+	posts, _ := crud.All()
 
 	var dataHtml = ""
 
@@ -40,7 +46,7 @@ func getData(rw http.ResponseWriter, req *http.Request) {
 func postData(rw http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 
-	controller.Controller.Create(controller.PostResource{Title: req.Form.Get("title"), Body: req.Form.Get("body")})
+	crud.Create(controller.Resource{Title: req.Form.Get("title"), Body: req.Form.Get("body")})
 }
 
 func addRoutes() {
